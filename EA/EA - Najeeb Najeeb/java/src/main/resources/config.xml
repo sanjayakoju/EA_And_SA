@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <beans profile="development, default">
+<!--        <aop:aspectj-autoproxy></aop:aspectj-autoproxy>-->
+        <bean name="logger" class="edu.miu.cs544.programmingtest2.service.FileLogger"></bean>
+        <bean name="dateService" class="edu.miu.cs544.programmingtest2.service.DateService"></bean>
+        <bean class="edu.miu.cs544.programmingtest2.service.EmailSystem">
+            <constructor-arg ref="dateService"></constructor-arg>
+        </bean>
+        <bean name="dbManager" class="edu.miu.cs544.programmingtest2.service.MySqlManager"></bean>
+        <bean class="edu.miu.cs544.programmingtest2.service.StudentCRUD">
+            <constructor-arg ref="dbManager"></constructor-arg>
+        </bean>
+        <bean name="aspectJLogging" class="edu.miu.cs544.programmingtest2.aspect.AspectJLogging">
+            <constructor-arg ref="logger"></constructor-arg>
+        </bean>
+    </beans>
+
+    <beans profile="development">
+<!--        <aop:aspectj-autoproxy></aop:aspectj-autoproxy>-->
+        <bean id="dbManager" class="edu.miu.cs544.programmingtest2.service.MsSqlManager"></bean>
+        <bean name="DBLogger" class="edu.miu.cs544.programmingtest2.service.DbLogger"></bean>
+    </beans>
+
+</beans>
